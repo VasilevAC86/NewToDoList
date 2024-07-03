@@ -39,6 +39,8 @@ namespace NewToDoList
             dateToDo.SelectedDate = new DateTime(2024, 01, 10);
 
             (this.Owner as MainWindow).listToDo.Items.Refresh();
+            (this.Owner as MainWindow).OnPropertyChanged();
+
             this.Close();
         }
     }

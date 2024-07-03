@@ -1,6 +1,7 @@
 ﻿using NewToDoList.src;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,13 +20,25 @@ namespace NewToDoList
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        public List<ToDo> ToDoList;
+        private List<ToDo> todoList;
+
+        public List<ToDo> TodoList {
+            get( return todoList; )
+            set
+            {
+                todoList = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public int CountDone {  get; private set; }
+
         public MainWindow()
         {
             InitializeComponent();
-
+            DataContext = this;
             ToDoList = new List<ToDo>();
 
             ToDoList.Add(new ToDo("Дело 1", "Описание", new DateTime(2024, 01, 10)));
@@ -34,11 +47,22 @@ namespace NewToDoList
 
             listToDo.ItemsSource = ToDoList;
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        
+        public void OnPropertyChanged() 
+        { 
+            CountDone=TodoList.Where(e => e.Done == true).ToList().Count;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TodoList"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountDone"));
+        }
+
         private void DeleteJob(object sender, RoutedEventArgs eventArgs)
         {
             ToDoList.Remove(listToDo.SelectedItem as ToDo);
             listToDo.ItemsSource = null;
             listToDo.ItemsSource = ToDoList;
+            OnPropertyChanged();
         }
         private void CheckBox_Checked(object sender, RoutedEventArgs e) 
         { 
@@ -46,6 +70,7 @@ namespace NewToDoList
             {
                 (listToDo.SelectedItem as ToDo).Done = true;
             }
+            OnPropertyChanged();
         }
         private void CheckBox_Uncheked(object sender, RoutedEventArgs e)
         {
@@ -53,6 +78,7 @@ namespace NewToDoList
             {
                 (listToDo.SelectedItem as ToDo).Done = false;
             }
+            OnPropertyChanged();
         }
         private void OpenWindow(object sender, RoutedEventArgs e)
         {

@@ -8,24 +8,41 @@
         Background="#FFFDFAF1"
         Icon="Images/icon.png"
         Title="Новое дело" Height="450" Width="400">
+    <Window.Resources>
+        <Style TargetType="DatePicker" x:Key="PickerStyle">
+            <Setter Property="SelectedDateFormat" Value="Long"/>
+            <Setter Property="BorderThickness" Value="1.5"/>
+            <Setter Property="BorderBrush" Value="#5EBEC4"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CalendarStyle">
+                <Setter.Value>
+                    <Style TargetType="Calendar">
+                        <Setter Property="BorderThickness" Value="1.5"/>
+                        <Setter Property="BorderBrush" Value="#5EBEC4"/>
+                        <Setter Property="Background" Value="#FFFDFAF1"/>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock FontSize="26" TextAlignment="Center" Margin="12">Новое дело</TextBlock>
+        <TextBlock Style="{StaticResource HeaderStyle}" TextAlignment="Center" Margin="12">Новое дело</TextBlock>
         <GroupBox Grid.Row="1" Background="#FDF5DF" Padding="8" Name="groupBoxToDo">
             <StackPanel>
                 <TextBlock>Название:</TextBlock>
                 <TextBox x:Name="titleToDo"></TextBox>
                 <TextBlock Margin="0 8 0 4">Выполнить до:</TextBlock>
-                <DatePicker Name="dateToDo"/>
+                <DatePicker Name="dateToDo" Style="{StaticResource PickerStyle}"/>
                 <TextBlock Margin="0 8 0 4">Описание:</TextBlock>
                 <TextBox AcceptsReturn="True" AcceptsTab="True" MaxLines="10" MinLines="10" x:Name="descriptionToDo"></TextBox>
             </StackPanel>
         </GroupBox>
-        <Button Click="AddJob" MaxWidth="150" Margin="12" Padding="12" Background="#5EBEC4" Grid.Row="2" Name="buttonAdd" 
+        <Button Click="AddJob" MaxWidth="150" Style="{StaticResource ButtonStyle}" Grid.Row="2" Name="buttonAdd" 
                 ToolTip="При добавлении дело появится в списке слева, и его прийдётся выполнить">Добавить дело</Button>
     </Grid>
 </Window>
